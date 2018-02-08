@@ -1,7 +1,7 @@
-package lesson_07_02_2018;
+package lesson_08_02_2018;
 
 @SuppressWarnings("Duplicates")
-public class Example2 {
+public class Example1 {
 
     private static volatile Integer value = 0;
 
@@ -12,23 +12,31 @@ public class Example2 {
             }
         });
 
-        Thread dec = new Thread(() -> {
+        Thread dec1 = new Thread(() -> {
+            for (int i = 0; i < 1_000_000; ++i) {
+                dec();
+            }
+        });
+
+        Thread dec2 = new Thread(() -> {
             for (int i = 0; i < 1_000_000; ++i) {
                 dec();
             }
         });
 
         inc.start();
-        dec.start();
+        dec1.start();
+        dec2.start();
 
         inc.join();
-        dec.join();
+        dec1.join();
+        dec2.join();
 
         System.out.println(value);
     }
 
     private static void inc() {
-        synchronized (Example2.class) {
+        synchronized (Example1.class) {
             ++value;
         }
     }
@@ -36,22 +44,11 @@ public class Example2 {
     private synchronized static void dec() {
         --value;
     }
-
-    private synchronized void method1() {
-        // 1
-        // 2
-        // 3 <-
-        // 4
-    }
-
-    private final Object monitor = new Object();
-
-    private void method2() {
-        // 1
-        // 2
-        synchronized (monitor) {
-            // 3 <-
-        }
-        // 4
-    }
 }
+
+// inc            dec1             dec2          Example1.class
+//                                                    ()
+//  +
+//                 ~
+//                                  ~
+//  -                                                 ()
