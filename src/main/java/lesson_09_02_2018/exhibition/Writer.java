@@ -9,15 +9,16 @@ public class Writer extends Thread {
     private final Storage storage ;
 
     public Writer(Storage storage) {
+        super("Writer");
         this.storage = storage;
     }
 
     @Override
     @SneakyThrows
     public void run() {
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 3; i++) {
             storage.write(String.valueOf(i));
-            TimeUnit.SECONDS.sleep(3);
+            TimeUnit.SECONDS.sleep(2);
         }
     }
 }
