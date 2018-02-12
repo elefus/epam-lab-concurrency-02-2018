@@ -8,7 +8,7 @@ public class Reader extends Thread {
 
     private final Storage storage;
 
-    public Reader(Storage storage, String name) {
+    Reader(Storage storage, String name) {
         super(name);
         this.storage = storage;
     }
@@ -17,7 +17,7 @@ public class Reader extends Thread {
     @SneakyThrows
     public void run() {
         for (int i = 0; i < 10; i++) {
-            System.out.println(storage.read());
+            System.out.println(Thread.currentThread().getName() + " read " + storage.read());
             TimeUnit.MILLISECONDS.sleep(500);
         }
     }
