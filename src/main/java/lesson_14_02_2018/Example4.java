@@ -2,7 +2,6 @@ package lesson_14_02_2018;
 
 import lombok.Data;
 import lombok.Setter;
-import lombok.Value;
 
 import java.util.concurrent.*;
 

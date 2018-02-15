@@ -5,8 +5,7 @@ import java.util.concurrent.*;
 @SuppressWarnings("Duplicates")
 public class Example3 {
 
-
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         BlockingQueue<String> window = new SynchronousQueue<>(true);
 
         Callable<Object> callableWithNullAsResult = Executors.callable(() -> System.out.println("123"));
@@ -49,7 +48,7 @@ public class Example3 {
 
         ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         scheduledExecutorService.schedule(service::shutdownNow, 14, TimeUnit.SECONDS);
-        scheduledExecutorService.schedule(scheduledExecutorService::shutdownNow, 15, TimeUnit.SECONDS);
+        scheduledExecutorService.schedule(scheduledExecutorService::shutdown, 15, TimeUnit.SECONDS);
     }
 
     private static ExecutorService getService() {

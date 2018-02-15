@@ -1,5 +1,8 @@
 package lesson_09_02_2018.exhibition;
 
+import lombok.SneakyThrows;
+
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -7,37 +10,30 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class Storage {
 
-    private final Lock readLock;
-    private final Lock writeLock;
     private volatile String value = "DEFAULT";
-
-    Storage() {
-        ReadWriteLock lock = new ReentrantReadWriteLock();
-        writeLock = lock.writeLock();
-        readLock = lock.readLock();
-    }
+    private final Semaphore semaphore = new Semaphore(Integer.MAX_VALUE, true);
 
     String read() {
         try {
-            readLock.lock();
+            semaphore.acquire();
             TimeUnit.SECONDS.sleep(1);
             return value;
         } catch (InterruptedException ex) {
             throw new RuntimeException(ex);
         } finally {
-            readLock.unlock();
+            semaphore.release();
         }
     }
 
+    @SneakyThrows
     void write(String value) {
         try {
-            writeLock.lock();
+            semaphore.acquire(Integer.MAX_VALUE);
             this.value = value;
-            TimeUnit.SECONDS.sleep(1);
         } catch (InterruptedException ex) {
             throw new RuntimeException(ex);
         } finally {
-            writeLock.unlock();
+            semaphore.release(Integer.MAX_VALUE);
         }
     }
 }
