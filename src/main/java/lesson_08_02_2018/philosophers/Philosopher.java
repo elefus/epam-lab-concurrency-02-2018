@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class Philosopher {
     private final String name;
+    private Mutex canEat = new Mutex();
 
     public void getToTable(Table table) {
         table.addGuest(this);
@@ -18,6 +19,11 @@ public class Philosopher {
         Stick rightStick = table.getRightStick(this);
         Runnable eat = () -> {
             try {
+                synchronized (canEat) {
+                    while (!canEat.isAllowed()) {
+                        canEat.wait();
+                    }
+                }
                 synchronized (leftStick) {
                     System.out.println(name + " took left stick");
                     TimeUnit.SECONDS.sleep(1);
