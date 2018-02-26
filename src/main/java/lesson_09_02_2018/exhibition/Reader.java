@@ -16,7 +16,7 @@ public class Reader extends Thread {
     @Override
     @SneakyThrows
     public void run() {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 30; i++) {
             System.out.println(storage.read());
             TimeUnit.MILLISECONDS.sleep(500);
         }
