@@ -26,8 +26,9 @@ public class Storage {
         }
         TimeUnit.SECONDS.sleep(1);
         synchronized (readerMonitor) {
-            counter--;
-            readerMonitor.notify();
+            if (--counter == 0) {
+                readerMonitor.notify();
+            }
             return value;
         }
     }
