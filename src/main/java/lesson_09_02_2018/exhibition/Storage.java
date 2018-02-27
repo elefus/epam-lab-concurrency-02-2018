@@ -7,8 +7,8 @@ import java.util.concurrent.TimeUnit;
 
 public class Storage {
 
-    private String value = "DEFAULT";
-    private Boolean isClosed = false;
+    private volatile String value = "DEFAULT";
+    private volatile Boolean isClosed = false;
     private volatile Integer counter = 0;
     private final Object readerMonitor = new Object();
     private final Object writerMonitor = new Object();
