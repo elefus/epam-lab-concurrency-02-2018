@@ -16,6 +16,7 @@ public class Writer extends Thread {
     @SneakyThrows
     public void run() {
         for (int i = 0; i < 5; i++) {
+            System.out.println(Thread.currentThread().getName() + " is writing " + String.valueOf(i));
             storage.write(String.valueOf(i));
             TimeUnit.SECONDS.sleep(3);
         }
